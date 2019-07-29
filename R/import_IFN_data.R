@@ -27,19 +27,21 @@
 #'
 #' @import tcltk data.table utils readr
 import_IFN <- function(choix_dept = NULL, choix_ser = NULL, annees = NULL, split = T, interactif = F, save_dsn = ""){
-  dep <- IFNtraitement::dep
-  dep_choix <- tk_select.list(as.vector(dep[,2]), preselect = NULL, multiple = T,
-                              title = "Selectionner les départements dont vous souhaiter extraire les données IFN")
-  dep_choix <-left_join(data.frame(NomDep = dep_choix), dep[,c('NumDep','NomDep')], by = 'NomDep')[,'NumDep']
-  ser <- IFNtraitement::ser
-  ser_choix <- tk_select.list(as.vector(ser[,2]), preselect = NULL, multiple = T,
-                              title = "Selectionner les sylvo-éco-régions sur lesquelles vous souhaitez restreindre les données IFN")
-  ser_choix <-as.character(left_join(data.frame(NomSER = ser_choix), ser, by = 'NomSER')[,'codeser'])
-  an_debut <- tk_select.list(2005:2017, preselect = NULL, multiple = F,
-                             title = "choix de la première année dont les données IFN seront considérées")
-  an_fin <- tk_select.list(an_debut:2017, preselect = NULL, multiple = F,
-                           title = "choix de la dernière année dont les données IFN seront considérées")
-  annees <- an_debut:an_fin
+  if(interactif == T){
+    dep <- IFNtraitement::dep
+    dep_choix <- tk_select.list(as.vector(dep[,2]), preselect = NULL, multiple = T,
+                                title = "Selectionner les départements dont vous souhaiter extraire les données IFN")
+    dep_choix <-left_join(data.frame(NomDep = dep_choix), dep[,c('NumDep','NomDep')], by = 'NomDep')[,'NumDep']
+    ser <- IFNtraitement::ser
+    ser_choix <- tk_select.list(as.vector(ser[,2]), preselect = NULL, multiple = T,
+                                title = "Selectionner les sylvo-éco-régions sur lesquelles vous souhaitez restreindre les données IFN")
+    ser_choix <-as.character(left_join(data.frame(NomSER = ser_choix), ser, by = 'NomSER')[,'codeser'])
+    an_debut <- tk_select.list(2005:2017, preselect = NULL, multiple = F,
+                               title = "choix de la première année dont les données IFN seront considérées")
+    an_fin <- tk_select.list(an_debut:2017, preselect = NULL, multiple = F,
+                             title = "choix de la dernière année dont les données IFN seront considérées")
+    annees <- an_debut:an_fin
+  }
   if (is.null(annees)){
     warning("Attention vous n'avez pas spécifié d'année ou plage d'année sur
             lesquelles vous souhaitiez téléchargé les données IFN,
