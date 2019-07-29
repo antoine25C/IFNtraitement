@@ -29,13 +29,13 @@
 import_IFN <- function(choix_dept = NULL, choix_ser = NULL, annees = NULL, split = T, interactif = F, save_dsn = ""){
   if(interactif == T){
     dep <- IFNtraitement::dep
-    dep_choix <- tk_select.list(as.vector(dep[,2]), preselect = NULL, multiple = T,
+    choix_dept <- tk_select.list(as.vector(dep[,2]), preselect = NULL, multiple = T,
                                 title = "Selectionner les départements dont vous souhaiter extraire les données IFN")
-    dep_choix <-left_join(data.frame(NomDep = dep_choix), dep[,c('NumDep','NomDep')], by = 'NomDep')[,'NumDep']
+    choix_dept <-left_join(data.frame(NomDep = choix_dept), dep[,c('NumDep','NomDep')], by = 'NomDep')[,'NumDep']
     ser <- IFNtraitement::ser
-    ser_choix <- tk_select.list(as.vector(ser[,2]), preselect = NULL, multiple = T,
+    choix_ser <- tk_select.list(as.vector(ser[,2]), preselect = NULL, multiple = T,
                                 title = "Selectionner les sylvo-éco-régions sur lesquelles vous souhaitez restreindre les données IFN")
-    ser_choix <-as.character(left_join(data.frame(NomSER = ser_choix), ser, by = 'NomSER')[,'codeser'])
+    choix_ser <-as.character(left_join(data.frame(NomSER = choix_ser), ser, by = 'NomSER')[,'codeser'])
     an_debut <- tk_select.list(2005:2017, preselect = NULL, multiple = F,
                                title = "choix de la première année dont les données IFN seront considérées")
     an_fin <- tk_select.list(an_debut:2017, preselect = NULL, multiple = F,
@@ -47,20 +47,17 @@ import_IFN <- function(choix_dept = NULL, choix_ser = NULL, annees = NULL, split
             lesquelles vous souhaitiez téléchargé les données IFN,
             auncune données n'ont donc été téléchargées")
     return(NULL)
-  }
-  else if((annees < 2005) || (min(annees)<2005)){
+  } else if((annees < 2005) || (min(annees)<2005)){
     warning("Attention l'année que vous avez spécifié ou la plus petite année de la plage
             d'annéee spécifiée est antérieur à 2005 (première année pour lesquelles les données
             IFN sont disponibles en libre accès sur internet)
             Aucune donnée n'a donc été téléchargée")
     return(NULL)
-  }
-  else if (!class(annees)%in% c("integer","numeric")){
+  } else if (!class(annees)%in% c("integer","numeric")){
     warning("l'année ou plage d'année spécifié n'est pas composé de nombre entier,
             Aucune donnée n'a donc été téléchargée")
     return(NULL)
-  }
-  else {
+  } else {
     rep <- "https://inventaire-forestier.ign.fr/IMG/zip/" #lien permettant le téléchargemnt via R des données brutes de l'IFN
     IFNarbres    <- data.table()
     IFNplacettes <- data.table()
@@ -137,12 +134,10 @@ import_IFN <- function(choix_dept = NULL, choix_ser = NULL, annees = NULL, split
   if (dim(IFN_data$IFNplacettes)[1] != 0){
     IFN_data <-select_don_IFN(IFN_data, choix_dept = choix_dept, choix_ser=choix_ser, split = split)
   }
-  if (dim(IFN_data$IFNplacettes)[1] != 0){
-    test <- try(saveRDS(IFN_data, file= save_dsn))
-    if (class(test) == "try-error" & save_dsn != ""){
-      warning("Les données IFN n'ont pas pu être enregistrées,
-              Cause probable : chemin vers le dossier de sauvegarde incorrect")
-    }
+  test <- try(saveRDS(IFN_data, file= save_dsn), silent = T)
+  if (class(test) == "try-error" & save_dsn != ""){
+    warning("Les données IFN n'ont pas pu être enregistrées,
+            Cause probable : chemin vers le dossier de sauvegarde incorrect")
   }
   return(IFN_data)
 }
