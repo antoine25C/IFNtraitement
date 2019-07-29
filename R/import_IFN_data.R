@@ -85,35 +85,35 @@ import_IFN <- function(choix_dept = NULL, choix_ser = NULL, annees = NULL, split
         j <- (j-1) #j diminue après chaque boucle pour trouver pas à pas le dernier fichier le plus à jour de la base de donnée
       }
       if (class(test) != "try-error"){
-        tabArbres     <- liste[grepl("trees_forest_2", liste)]
+        tabArbres     <- liste[grepl("/trees_forest_2", liste)]
         if(length(tabArbres) == 0){
           tabArbres     <- liste[grepl("arbres_foret_2", liste)]
-          if(length(tabArbres) != 0){
-            tabArbres <- read_csv2(tabArbres)
-          } else {
-            tabArbres = NULL
-            print(cat(paste("les données arbres de l'année",i,"n'ont pas été téléchargées.\nCause probable :fichier arbres absent de la base de données IFN pour cette année ou non du fichier non reconnu", sep = " ")))
-          }
         }
-        tabPlacettes  <- liste[grepl("plots_forest_2", liste)]
+        if(length(tabArbres) != 0){
+            tabArbres <- read_csv2(tabArbres)
+        } else {
+          tabArbres = NULL
+          print(cat(paste("les données arbres de l'année",i,"n'ont pas été téléchargées.\nCause probable :fichier arbres absent de la base de données IFN pour cette année ou non du fichier non reconnu", sep = " ")))
+        }
+        tabPlacettes  <- liste[grepl("/plots_forest_2", liste)]
         if(length(tabPlacettes) == 0){
           tabPlacettes     <- liste[grepl("placettes_foret_2", liste)]
-          if(length(tabPlacettes) != 0){
-            tabPlacettes <- read_csv2(tabPlacettes)
-          } else {
-            tabPlacettes = NULL
-            print(cat(paste("les données placettes de l'année",i,"n'ont pas été téléchargées.\nCause probable :fichier placettes absent de la base de données IFN pour cette année ou non du fichier non reconnu", sep = " ")))
-          }
         }
-        tabEcologie <- liste[grepl("ecology_2", liste)]
+        if(length(tabPlacettes) != 0){
+          tabPlacettes <- read_csv2(tabPlacettes)
+        } else {
+          tabPlacettes = NULL
+          print(cat(paste("les données placettes de l'année",i,"n'ont pas été téléchargées.\nCause probable :fichier placettes absent de la base de données IFN pour cette année ou non du fichier non reconnu", sep = " ")))
+        }
+        tabEcologie <- liste[grepl("/ecology_2", liste)]
         if(length(tabEcologie) == 0){
           tabEcologie     <- liste[grepl("ecologie_2", liste)]
-          if(length(tabEcologie) != 0){
-            tabEcologie <- read_csv2(tabEcologie)
-          } else {
-            tabEcologie = NULL
-            print(cat(paste("les données ecologies de l'année",i,"n'ont pas été téléchargées.\nCause probable :fichier ecologie absent de la base de données IFN pour cette année ou non du fichier non reconnu", sep = " ")))
-          }
+        }
+        if(length(tabEcologie) != 0){
+          tabEcologie <- read_csv2(tabEcologie)
+        } else {
+          tabEcologie = NULL
+          print(cat(paste("les données ecologies de l'année",i,"n'ont pas été téléchargées.\nCause probable :fichier ecologie absent de la base de données IFN pour cette année ou non du fichier non reconnu", sep = " ")))
         }
         tabPlacettes$Annee <- i
         tabArbres$Annee <- i
@@ -129,7 +129,6 @@ import_IFN <- function(choix_dept = NULL, choix_ser = NULL, annees = NULL, split
     IFN_data$IFNplacettes <- IFNplacettes
     IFN_data$IFNarbres <- IFNarbres
     IFN_data$IFNecologie <- IFNecologie
-
   }
   if (dim(IFN_data$IFNplacettes)[1] != 0){
     IFN_data <-select_don_IFN(IFN_data, choix_dept = choix_dept, choix_ser=choix_ser, split = split)
