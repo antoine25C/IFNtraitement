@@ -12,7 +12,7 @@
 #' type de mélange entre feuillus et résieneux du peuplement)
 #' @export
 #'
-#' @examples
+#' @import dplyr
 calc_dendro <- function(IFN_data, precomptable = 17.5, code_ess = IFNtraitement::code_ess){
   for (i in 1:length(names(IFN_data$IFNarbres))){
     IFN_data$IFNarbres[[i]] <- IFN_data$IFNarbres[[i]]%>%
@@ -92,7 +92,7 @@ calc_dendro <- function(IFN_data, precomptable = 17.5, code_ess = IFNtraitement:
 #'
 #' @return renvoie la base de données filtrée sous le même format que la base de données spécifiée en entrée
 #'
-#' @examples
+#' @import dplyr
 select_plct_completes<- function(IFN_data){
   for (i in 1:length(names(IFN_data$IFNarbres))){
     ir_manquant <- unique(IFN_data$IFNarbres[[i]]$idp[is.na(IFN_data$IFNarbres[[i]]$ir5)])
@@ -116,7 +116,7 @@ select_plct_completes<- function(IFN_data){
 #' (catégorie de diamètre de 5cm en 5cm et grande catégorie de diamètre)
 #' @export
 #'
-#' @examples
+#' @import data.table dplyr
 classif_cat_Diam <- function(IFN_data){
   listeD <- seq(2.5,147.5, by = 5)
   list_Cat <-append(rep("régé",2),c(rep("Perche",2),rep("PB",2),rep("BM",3), rep("GB",4),
@@ -146,7 +146,7 @@ classif_cat_Diam <- function(IFN_data){
 #' surface terrière individuelle (g), accroissement individuel sur le diamètre (acc_d) et en surface terrière (acc_g)
 #' @export
 #'
-#' @examples
+#' @import dplyr
 calc_dendro_arbre <- function(IFN_data, precomptable = 17.5, code_ess = IFNtraitement::code_ess){
   IFNarbres <- IFN_data$IFNarbres
   for (i in 1:length(names(IFNarbres))){

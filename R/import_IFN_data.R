@@ -25,7 +25,7 @@
 #'aux sylvo-éco-régions de la zone d'étude
 #' @export
 #'
-#' @examples
+#' @import tcltk data.table utils readr
 import_IFN <- function(choix_dept = NULL, choix_ser = NULL, annees = NULL, split = T, interactif = F, save_dsn = ""){
   dep <- IFNtraitement::dep
   dep_choix <- tk_select.list(as.vector(dep[,2]), preselect = NULL, multiple = T,
@@ -135,7 +135,7 @@ import_IFN <- function(choix_dept = NULL, choix_ser = NULL, annees = NULL, split
 #' @return la fonction retourne une liste avec trois sous listes correspondant chacune aux données placettes, arbres et écologies des données brutes de l'IFN
 #'selon la valeur de split en entrée de la fonction chaque sous liste comportera 1 'si (split == FALSE) ou n dataframe correspondant chacun aux données restreindre aux sylvo-écorégion de la zone d'étude
 #'
-#' @examples
+#' @import dplyr rlist
 select_don_IFN <- function(IFN_data, choix_dept = NULL, choix_ser=NULL, split = T){
   ListPlacettes <- list()
   ListArbres <- list()

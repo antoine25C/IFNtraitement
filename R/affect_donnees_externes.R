@@ -10,7 +10,7 @@
 #' au spatialDataFrame des placettes auxquelles une altitude approximative à été affectée
 #' @export
 #'
-#' @examples
+#' @import sf raster
 extract_alt_plct_IFN<- function(IFN_data, mnt_L93, crs = 2154){
   if(crs != 2154){
     warning("cette fonction nécessite que le système de coordonnées des raster d'entrée soit le Lambert 93 code epsg = 2154")
@@ -53,7 +53,7 @@ extract_alt_plct_IFN<- function(IFN_data, mnt_L93, crs = 2154){
 #' les données géologiques : niveau de fertilité, acide/basique, dure/tendre
 #' @export
 #'
-#' @examples
+#' @import dplyr
 affect_geol_plct_IFN <- function(IFN_data, shp_geol){
   plct_geol <- as.data.frame(shp_geol)[,c('idp', 'niv_fertilite', 'basique_acide', 'dure_tendre')]
 
@@ -76,7 +76,7 @@ affect_geol_plct_IFN <- function(IFN_data, shp_geol){
 #' Donnée ajoutée aux tableux de données par placette et par arbre.
 #' @export
 #'
-#' @examples
+#' @import sf raster dplyr
 rayonnement <- function(IFN_data, rad){
   for (i in 1:length(names(IFN_data$IFNplacettes))){
     plct <- sf::st_as_sf(IFN_data$IFNplacettes[[i]], coords = c('xl93','yl93'))[,c('idp','geometry')]
@@ -99,7 +99,7 @@ rayonnement <- function(IFN_data, rad){
 #' Donnée ajoutée aux tableux de données par placette et par arbre.
 #' @export
 #'
-#' @examples
+#' @import sf raster dplyr
 precipitation <- function(IFN_data, prec){
   for (i in 1:length(names(IFN_data$IFNplacettes))){
     plct <- sf::st_as_sf(IFN_data$IFNplacettes[[i]], coords = c('xl93','yl93'))[,c('idp','geometry')]

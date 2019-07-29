@@ -12,7 +12,7 @@
 #' @return renvoie le raster une fois fussionné et l'enregistre dans les dossier et avec le nom spécifié en entrée de la fonction
 #' @export
 #'
-#' @examples
+#' @import raster
 fusion_BD_alti<- function(list_dir_raster, nom_sortie, chemin_sortie = getwd(), ext = ".tif", crs =2154){
   if(crs != 2154){
     warning("cette fonction nécessite que le système de coordonnées des raster d'entrée soit le Lambert 93 code epsg = 2154")
@@ -47,7 +47,7 @@ fusion_BD_alti<- function(list_dir_raster, nom_sortie, chemin_sortie = getwd(), 
 #' @return renvoie l'ecart quadratique moyen entre valeures prédites et valeures de référence
 #' @export
 #'
-#' @examples
+#' @import dplyr
 RMSE = function(ref, predict){
   df = data.frame(ref = ref,predict =predict)
   df <- df %>%

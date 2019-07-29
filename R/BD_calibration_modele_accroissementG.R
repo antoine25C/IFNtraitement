@@ -15,7 +15,7 @@
 #' en grandes classee de l'altitude, lapente et l'exposition.
 #' @export
 #'
-#' @examples
+#' @import dplyr rlist
 bd_calibration <- function (IFN_data, code_ser = IFNtraitement::code_ser_num){
 
   list_ser <- list()
