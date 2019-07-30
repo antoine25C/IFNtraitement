@@ -1,3 +1,35 @@
+#' rassemble l'ensemble des data.frames contenant des données arbres en un seul data.frame
+#'
+#' @param IFN_data Base de données IFN issue du téléchargement par la fonction import_IFN(...)
+#'
+#' @return renvoie un data.frame issue de la fusion de tous les dataframes initialment présent dans l'objet IFN_dat$IFNarbres
+#' @export
+#'
+#' @examples
+concatenation_BD_arbres <- function(IFN_data){
+  IFNarbres <- data.frame()
+  for (i in 1:length(IFN_data$IFNarbres)){
+    IFNarbres <- rbind(IFNarbres, IFN_data$IFNarbres[[i]])
+  }
+  return(IFNarbres)
+}
+
+#' rassemble l'ensemble des data.frames contenant des données placettes en un seul data.frame
+#'
+#' @param IFN_data Base de données IFN issue du téléchargement par la fonction import_IFN(...)
+#'
+#' @return renvoie un data.frame issue de la fusion de tous les dataframes initialment présent dans l'objet IFN_dat$IFNplacette
+#' @export
+#'
+#' @examples
+concatenation_BD_placette <- function(IFN_data){
+  IFNplacette <- data.frame()
+  for (i in 1:length(IFN_data$IFNplacette)){
+    IFNplacette <- rbind(IFNplacette, IFN_data$IFNplacette[[i]])
+  }
+  return(IFNplacette)
+}
+
 #' fonctions permettant la fusion de raster
 #'
 #' initialement cette fonction à permit la fusion de BD_alti de l'IGN sur plusieurs département
